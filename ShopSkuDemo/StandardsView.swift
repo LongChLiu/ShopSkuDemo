@@ -50,7 +50,7 @@ enum StandsViewDismissAnimationType : NSInteger {
 
 
 
-class StandardsView: UIView,UITextViewDelegate,UITableViewDelegate,UITableViewDataSource {
+class StandardsView: UIView,UITextViewDelegate,UITableViewDelegate,UITableViewDataSource,ThrowLineToolDelegate,UIAlertViewDelegate {
 
     /*
     // Only override draw() if you perform custom drawing.
@@ -60,6 +60,8 @@ class StandardsView: UIView,UITextViewDelegate,UITableViewDelegate,UITableViewDa
     }
     */
 
+    
+    
 
      let GapToLeft = 20; let GoodDetailScaleValue = 0.9; let ItemsBaseColor = UIColor.white;
 
@@ -255,10 +257,10 @@ extension StandardsView{
         showView.addSubview(lineView)
 
         //MARK: 键盘退出手势
-        var tepGes = UITapGestureRecognizer(target:self,action:#selector(StandardsView.tapShowViewAction(tap:)))
+        let tepGes = UITapGestureRecognizer(target:self,action:#selector(StandardsView.tapShowViewAction(tap:)))
         showView.addGestureRecognizer(tepGes)
 
-        var tapGes0 = UITapGestureRecognizer(target:self,action:#selector(StandardsView.tapSelfViewAction(tap:)))
+        let tapGes0 = UITapGestureRecognizer(target:self,action:#selector(StandardsView.tapSelfViewAction(tap:)))
         self.addGestureRecognizer(tapGes0)
 
         goodNum = UILabel();priceLab = UILabel();tipLab = UILabel()
@@ -328,9 +330,17 @@ extension StandardsView{
 
 
     func clickAction(btn:UIButton){
-
-
-
+        
+        if btn == sureBtn {
+            sureBtn.backgroundColor = UIColor.yellow
+            cancelBtn.backgroundColor = ItemsBaseColor
+            self.delegate.standardView(standardsView: self, content: "")
+        }
+        if btn == cancelBtn {
+            cancelBtn.backgroundColor = UIColor.yellow
+            sureBtn.backgroundColor = ItemsBaseColor
+        }
+        self.dismiss()
     }
 
 
@@ -385,12 +395,41 @@ extension StandardsView{
         if scale == 0 {
             scaleU = 20.0
         }
-
-
+        
+        var tool = ThrowLineTool.shareTool()
+        tool.delegate = self
+        var tempImgView = UIImageView()
+        tempImgView.frame = mainImgView.frame
+        tempImgView.image = mainImgView.image
+        tempImgView.tag = tempImgViewTag
+        
+        tempImgView.layer.cornerRadius = 5
+        tempImgView.layer.borderColor = UIColor.white.cgColor
+        tempImgView.layer.borderWidth = 3
+        self.addSubview(tempImgView)
 
         
+        self.tempImgViewArr.add(tempImgView)
+        tempImgViewTag  = tempImgViewTag + 1
+        tool.throwObject(obj: tempImgView, start: tempImgView.center, end: desPoint, height: height, num: scaleU, duration: durationU)
+        
+        self.perform(#selector(StandardsView.viewSetHidden(tag:)), with:(tempImgView.tag), afterDelay: duration-0.11)
 
     }
+    
+    
+    func viewSetHidden(tag:Int){
+        for obj in self.tempImgViewArr {
+            let objU : UIImageView = obj as! UIImageView
+            if objU.tag == tag {
+                objU.isHidden = true
+                objU.removeFromSuperview()
+                break
+            }
+        }
+    }
+    
+    
 
     /*
      *   按比例改变view
@@ -651,21 +690,53 @@ extension StandardsView{
     }
 
 
-
-
+    //抛物线结束
+    func animationDidFinish(view: UIView) {
+        
+    }
 
 
     func standardBtnClick(btn:UIButton){
-
-
-
-
+        
+        
+        btn.backgroundColor = UIColor.orange
+        btn.isSelected = true
+        
+        let tempArr : NSArray = self.standardBtnArr[(btn.tag & 0x0000ffff)/100] as! NSArray
+        
+        for temp in tempArr {
+            let tempU : UIButton = temp as! UIButton
+            if btn.tag == tempU.tag {
+                continue
+            }
+            tempU.backgroundColor = UIColor.white
+            tempU.isSelected = false
+        }
+        
+        let tagStr = "\((btn.tag & 0xffff0000) >> 16)"
+        self.standardBtnClickDict.setObject(tagStr, forKey: "\((btn.tag & 0x0000ffff)/100)" as NSCopying)
+        
+        self.delegate.standardView(standardsView: self, selBtnAction: btn, selID: tagStr, standName: self.standardArr[(btn.tag & 0x0000ffff)/100].standardName, idx: (btn.tag & 0x0000ffff)/100)
+        
     }
 
     func buyNumBtnClick(btn:UIButton){
+        
+        if btn.tag == 0 {
+            self.buyNum = self.buyNum + 1
+        }
 
+        if self.buyNum <= 1 {
+            
+            let alertView = UIAlertView.init(title: "提示", message: "客官 你买不买阿 都减没了", delegate: self, cancelButtonTitle: "我看看再说", otherButtonTitles:"")
+            
+            alertView.show()
+            
+            return
+            
+        }
 
-
+        self.buyNum = self.buyNum - 1
 
     }
 
