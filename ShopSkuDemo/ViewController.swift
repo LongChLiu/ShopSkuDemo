@@ -8,6 +8,8 @@
 
 import UIKit
 
+let kScreenHeight = UIScreen.main.bounds.size.height
+
 class ViewController: UIViewController,StandardsViewDelegate {
 
 
