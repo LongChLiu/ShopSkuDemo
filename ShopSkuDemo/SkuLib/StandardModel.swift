@@ -16,15 +16,37 @@ class standardClassInfo: NSObject {
     //规格分类id
     var standardClassId : NSString! = nil
     //两个初始化方法
-    class func standardClassInfo(classId:String,standClassName:String)->standardClassInfo{
-        return standardClassInfo(classId:classId,standClassName:standClassName)
+
+    init(class_Id:String,stand_ClassName:String){
+
+
+        //self.init()
+
+        self.standardClassId = class_Id as NSString!
+        self.standardClassName = stand_ClassName
     }
 
-    convenience init(classId:String,standClassName:String){
-        self.init()
-        self.standardClassId = classId as NSString!
-        self.standardClassName = standClassName
+//    convenience init(class_Id:String,stand_ClassName:String){
+//
+//
+//        self.init()
+//
+//        self.standardClassId = class_Id as NSString!
+//        self.standardClassName = stand_ClassName
+//    }
+
+
+
+
+    class func standard_ClassInfo(classId:String,standClassName:String)->standardClassInfo{
+
+        let obj = standardClassInfo(class_Id: classId, stand_ClassName: standClassName)
+
+        return obj
     }
+
+
+
 
 }
 

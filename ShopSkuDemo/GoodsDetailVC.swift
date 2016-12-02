@@ -41,10 +41,6 @@ class GoodsDetailVC: UIViewController {
         tempBtn2.addTarget(self, action: #selector(GoodsDetailVC.btnAction(btn:)), for: .touchUpInside)
         view.addSubview(tempBtn2)
 
-
-
-
-
     }
 
     func btnAction(btn:UIButton){
