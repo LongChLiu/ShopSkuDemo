@@ -313,7 +313,7 @@ extension StandardsView{
         tempView.addSubview(priceLab)
 
 
-        self.goodNum.frame = CGRect.init(x: priceLab.frame.maxX, y: priceLab.frame.maxY, width: priceLab.frame.size.width, height: 30)
+        self.goodNum.frame = CGRect.init(x: priceLab.frame.minX, y: priceLab.frame.maxY, width: priceLab.frame.size.width, height: 30)
         goodNum.textColor = UIColor.black
         goodNum.font = UIFont.systemFont(ofSize: 14)
         goodNum.text = "库存"

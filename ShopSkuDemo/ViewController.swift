@@ -36,7 +36,7 @@ class ViewController: UIViewController,StandardsViewDelegate {
 
         let tempBtn3 = UIButton.init(frame: CGRect.init(x: tempBtn2.frame.maxX+10, y: Screen_Height-100, width: 60, height: 44))
         tempBtn3.tag = 2
-        tempBtn3.setImage(UIImage(named:"yellowBee"), for: .normal)
+    tempBtn3.setImage(UIImage(named:"yellowBee"), for: .normal)
         tempBtn3.addTarget(self, action: #selector(ViewController.btnAction(btn:)), for: .touchUpInside)
         view.addSubview(tempBtn3)
 
@@ -45,7 +45,6 @@ class ViewController: UIViewController,StandardsViewDelegate {
 
 
     func btnAction(btn:UIButton){
-
 
         let myStandardView = self.buildStandardView(img: (btn.imageView?.image)!, index: btn.tag)
         myStandardView.goodDetailView = self.view
@@ -83,10 +82,7 @@ class ViewController: UIViewController,StandardsViewDelegate {
         standView.tipLab.text = "请选择规格"
         standView.goodNum.text = "库存 10件"
 
-
         standView.customBtns = ["加入购物车","立即购买"]
-
-
 
         let tempClassInfo1 = standardClassInfo.init(class_Id: "100", stand_ClassName: "红色")
         let tempClassInfo2 = standardClassInfo.init(class_Id: "101", stand_ClassName: "蓝色")
@@ -142,13 +138,6 @@ class ViewController: UIViewController,StandardsViewDelegate {
         }
 
     }
-
-
-
-
-
-
-
 
 
 
