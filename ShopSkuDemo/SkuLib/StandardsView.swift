@@ -23,16 +23,16 @@ protocol StandardsViewDataSource {
 
 }
 
-protocol StandardsViewDelegate {
+@objc protocol StandardsViewDelegate {
 
-    func standardView(standardsView:StandardsView,cusBtnAction:UIButton)
-    func standardView(standardsView:StandardsView,btn:UIButton)
-    func standardView(standardsView:StandardsView,content:String)
-    func standardView(standardsView:StandardsView,selBtnAction:UIButton,selID:String,standName:String,idx:NSInteger)
+    @objc optional func standardView(standardsView:StandardsView,cusBtnAction:UIButton)
+    @objc optional func standardView(standardsView:StandardsView,btn:UIButton)
+    @objc optional func standardView(standardsView:StandardsView,content:String)
+    @objc optional func standardView(standardsView:StandardsView,selBtnAction:UIButton,selID:String,standName:String,idx:NSInteger)
     //Appear Animation
-    func customShowAnimation()
+    @objc optional func customShowAnimation()
     //Disappear Animation
-    func customDismissAnimation()
+    @objc optional func customDismissAnimation()
 }
 
 enum StandsViewShowAnimationType : NSInteger {
@@ -63,7 +63,7 @@ class StandardsView: UIView,UITextViewDelegate,UITableViewDelegate,UITableViewDa
     
     
 
-     let GapToLeft = 20; let GoodDetailScaleValue = 0.9; let ItemsBaseColor = UIColor.white;
+    let GapToLeft = 20; let GoodDetailScaleValue = 0.99; let ItemsBaseColor = UIColor.white;
 
     var _cellHeight : CGFloat! = 0
     var _cellNum : NSInteger! = 0
@@ -112,15 +112,19 @@ class StandardsView: UIView,UITextViewDelegate,UITableViewDelegate,UITableViewDa
 
 
 
-    public var _buyNum : NSInteger!
+    public var _buyNum : NSInteger! = 1
     public var buyNum : NSInteger!{
         set{
-            _buyNum = newValue
-            numberTextField.text = "\(newValue)"
+
+            if newValue == nil {
+                _buyNum = 1
+            }else{
+                _buyNum = newValue!
+            }
+            numberTextField.text! = "\(_buyNum!)"
         }
         get{
-            _buyNum = NSString(string:"\(numberTextField.text)").integerValue
-            return _buyNum
+            return _buyNum!
         }
     }
 
@@ -133,12 +137,12 @@ class StandardsView: UIView,UITextViewDelegate,UITableViewDelegate,UITableViewDa
             sureBtn.removeFromSuperview()
             lineView.removeFromSuperview()
 
-            var btnHeight : CGFloat = cancelBtn.frame.size.height
-            var btnWidth : CGFloat = Screen_Width / CGFloat(customBtns.count)
+            let btnHeight : CGFloat = cancelBtn.frame.size.height
+            let btnWidth : CGFloat = Screen_Width / CGFloat(customBtns.count)
 
 
             for idx in 0..<_customBtns.count {
-                var btn = UIButton(frame:CGRect.init(x: btnWidth*CGFloat(idx), y: Height_StandardView-44, width: btnWidth, height: btnHeight))
+                let btn = UIButton(frame:CGRect.init(x: btnWidth*CGFloat(idx), y: Height_StandardView-44, width: btnWidth, height: btnHeight))
                 btn.setTitle(_customBtns[idx], for: .normal)
                 btn.setTitleColor(UIColor.black, for: .normal)
                 btn.addTarget(self, action: #selector(StandardsView.customBtnsClickAction(btn:)), for: .touchUpInside)
@@ -146,12 +150,12 @@ class StandardsView: UIView,UITextViewDelegate,UITableViewDelegate,UITableViewDa
                 btn.titleLabel?.font = UIFont.systemFont(ofSize: 14)
 
                 if idx != _customBtns.count - 1 {
-                    var tempLineView = UIView(frame:CGRect.init(x: btnWidth-1, y: 0, width: 1, height: btn.frame.size.height))
+                    let tempLineView = UIView(frame:CGRect.init(x: btnWidth-1, y: 0, width: 1, height: btn.frame.size.height))
                     tempLineView.backgroundColor = UIColor.white
                     btn.addSubview(tempLineView)
                 }
 
-                self.delegate.standardView(standardsView: self, btn: btn)
+                self.delegate.standardView!(standardsView: self, btn: btn)
                 showView.addSubview(btn)
 
             }
@@ -172,10 +176,23 @@ class StandardsView: UIView,UITextViewDelegate,UITableViewDelegate,UITableViewDa
 
 
 
+
+    public var _standardArr : [StandardModel]! = nil
     public var standardArr : [StandardModel]!{
-        didSet{
-            mainTableView.reloadData()
+
+        set{
+            _standardArr = newValue
+            if _standardArr != nil {
+                mainTableView.reloadData()
+            }else{
+                _standardArr = [StandardModel]()
+            }
+
         }
+        get{
+            return _standardArr
+        }
+
     }
 
     /*
@@ -185,6 +202,20 @@ class StandardsView: UIView,UITextViewDelegate,UITableViewDelegate,UITableViewDa
     public var showAnimationType : StandsViewShowAnimationType! = nil
     public var dismissAnimationType : StandsViewDismissAnimationType! = nil
 
+
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.tempImgViewTag = 0
+        self.buildViews()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+
+
 }
 
 
@@ -193,20 +224,12 @@ class StandardsView: UIView,UITextViewDelegate,UITableViewDelegate,UITableViewDa
 
 
 
-
+//MARK:  一些扩展
 extension StandardsView{
 
-
-    convenience init() {
-        self.init()
-
-        self.tempImgViewTag = 0
-        self.buildViews()
-
-    }
-
-
     func buildViews(){
+
+        self.backgroundColor = UIColor.clear
 
         frame = self.screenBounds()
         coverView = UIView(frame: self.topView().bounds)
@@ -266,7 +289,7 @@ extension StandardsView{
         goodNum = UILabel();priceLab = UILabel();tipLab = UILabel()
 
         //购买或加入购物车数量
-        numberTextField = UITextField();numberTextField.text = "\(buyNum)"
+        numberTextField = UITextField();numberTextField.text = "\(buyNum!)"
         numberTextField.font = UIFont.systemFont(ofSize: 14);numberTextField.textColor = UIColor.black;numberTextField.textAlignment = .center;numberTextField.keyboardType = .numberPad
 
         if buyNum == 0 {
@@ -279,7 +302,9 @@ extension StandardsView{
 
     func initTableView(){
 
-        var tempView = UIView(frame:CGRect.init(x: 0, y: 0, width: Screen_Width, height: 100))
+        let tempView = UIView(frame:CGRect.init(x: 0, y: 0, width: Screen_Width, height: 100))
+        //tempView.backgroundColor = UIColor.white
+
         //最上面显示的信息 数据
         priceLab.frame = CGRect.init(x: mainImgView.frame.maxX+10 , y: 0, width: Screen_Width - (mainImgView.frame.size.width + mainImgView.frame.origin.x) - 10, height: 30)
         priceLab.textColor = UIColor.red
@@ -302,7 +327,7 @@ extension StandardsView{
         tempView.addSubview(tipLab)
 
 
-        var HlineView = UIView.init(frame: CGRect.init(x: 10, y: tempView.frame.size.height-1, width: Screen_Width-20, height: 0.5))
+        let HlineView = UIView.init(frame: CGRect.init(x: 10, y: tempView.frame.size.height-1, width: Screen_Width-20, height: 0.5))
         HlineView.backgroundColor = UIColor.gray
         tempView.addSubview(HlineView)
         showView.addSubview(tempView)
@@ -317,6 +342,7 @@ extension StandardsView{
         mainTableView.tableFooterView = UIView()
         _cellHeight = 100
         showView.addSubview(mainTableView)
+        showView.backgroundColor = UIColor.white
 
     }
 
@@ -334,7 +360,7 @@ extension StandardsView{
         if btn == sureBtn {
             sureBtn.backgroundColor = UIColor.yellow
             cancelBtn.backgroundColor = ItemsBaseColor
-            self.delegate.standardView(standardsView: self, content: "")
+            self.delegate.standardView!(standardsView: self, content: "")
         }
         if btn == cancelBtn {
             cancelBtn.backgroundColor = UIColor.yellow
@@ -346,7 +372,8 @@ extension StandardsView{
 
     func topView()->UIView{
         let window = UIApplication.shared.keyWindow
-        return (window?.subviews[0])!
+        return window!
+        //return (window!.subviews[0])
     }
 
 
@@ -396,9 +423,9 @@ extension StandardsView{
             scaleU = 20.0
         }
         
-        var tool = ThrowLineTool.shareTool()
+        let tool = ThrowLineTool.shareTool()
         tool.delegate = self
-        var tempImgView = UIImageView()
+        let tempImgView = UIImageView()
         tempImgView.frame = mainImgView.frame
         tempImgView.image = mainImgView.image
         tempImgView.tag = tempImgViewTag
@@ -477,7 +504,11 @@ extension StandardsView{
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.standardArr.count + 1
+        if self.standardArr == nil {
+            return 0
+        }else{
+            return self.standardArr.count + 1
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -545,12 +576,18 @@ extension StandardsView{
                 btn.tag = (indexPath.row * 100 + idx)  | (intU << 16)
                 let key = "\(indexPath.row)"
 
-                if strClassId!.intValue == NSString(string:standardBtnClickDict[key] as! String).intValue {
-                    btn.backgroundColor = UIColor.orange
+
+                if standardBtnClickDict.count != 0 {
+                    if strClassId!.intValue == NSString(string:standardBtnClickDict[key] as! String).intValue {
+                        btn.backgroundColor = UIColor.orange
+                    }
                 }
+
+
                 tempArr.add(btn)
                 btnX = btn.frame.maxX + btnGap
                 cell.contentView.addSubview(btn)
+
             }
             standardBtnArr.add(tempArr)
 
@@ -566,7 +603,7 @@ extension StandardsView{
             plusBtn.addTarget(self, action: #selector(StandardsView.buyNumBtnClick(btn:)), for: .touchUpInside)
             tempPoint.y = _cellHeight/2/2;
             plusBtn.center = tempPoint
-            plusBtn.tag = 0
+            plusBtn.tag = 0+1000
             plusBtn.setImage(UIImage(named:"StandarsAdd"), for: .normal)
             cell.addSubview(plusBtn)
 
@@ -579,7 +616,7 @@ extension StandardsView{
             let reduceBtn = UIButton(frame:CGRect.init(x: numberTextField.frame.origin.x - btnWidth, y: plusBtn.center.y - plusBtn.frame.size.height/2, width: plusBtn.frame.size.width, height: plusBtn.frame.size.height))
             reduceBtn.addTarget(self, action: #selector(StandardsView.buyNumBtnClick(btn:)), for: .touchUpInside)
             reduceBtn.setImage(UIImage(named:"StandarsDel"), for: .normal)
-            reduceBtn.tag = 1;
+            reduceBtn.tag = 1+1000;
             cell.addSubview(reduceBtn)
 
         }
@@ -604,7 +641,11 @@ extension StandardsView{
         let BtnHeight : CGFloat = 30;
         let minBtnLength : CGFloat =  50;//每个btn的最小长度
         let maxBtnLength : CGFloat = oneLineBtnWidtnLimit - btnGap*2;//每个btn的最大长度
-        var Btnx : CGFloat! //每个btn的起始位置
+        var Btnx : CGFloat! = 0 //每个btn的起始位置
+
+
+
+
         Btnx = Btnx + btnGap;
 
 
@@ -716,27 +757,26 @@ extension StandardsView{
         let tagStr = "\((btn.tag & 0xffff0000) >> 16)"
         self.standardBtnClickDict.setObject(tagStr, forKey: "\((btn.tag & 0x0000ffff)/100)" as NSCopying)
         
-        self.delegate.standardView(standardsView: self, selBtnAction: btn, selID: tagStr, standName: self.standardArr[(btn.tag & 0x0000ffff)/100].standardName, idx: (btn.tag & 0x0000ffff)/100)
+        self.delegate.standardView!(standardsView: self, selBtnAction: btn, selID: tagStr, standName: self.standardArr[(btn.tag & 0x0000ffff)/100].standardName, idx: (btn.tag & 0x0000ffff)/100)
         
     }
 
     func buyNumBtnClick(btn:UIButton){
         
-        if btn.tag == 0 {
+        if btn.tag-1000 == 0 {
             self.buyNum = self.buyNum + 1
         }
 
         if self.buyNum <= 1 {
-            
             let alertView = UIAlertView.init(title: "提示", message: "客官 你买不买阿 都减没了", delegate: self, cancelButtonTitle: "我看看再说", otherButtonTitles:"")
-            
             alertView.show()
-            
             return
-            
         }
 
-        self.buyNum = self.buyNum - 1
+
+        if btn.tag-1000 == 1 {
+            self.buyNum = self.buyNum - 1
+        }
 
     }
 
@@ -787,7 +827,7 @@ extension StandardsView{
             if goodDetailView != nil {
 
                 weak var weakSelf : StandardsView! = self
-                var t = self.goodDetailView.transform
+                let t = self.goodDetailView.transform
                 UIView.animate(withDuration: 1.0, animations: {
 
                     let tempTransform = t.scaledBy(x: CGFloat(weakSelf.GoodDetailScaleValue), y: CGFloat(weakSelf.GoodDetailScaleValue))
@@ -809,9 +849,11 @@ extension StandardsView{
 
             mainImgView.center = CGPoint.init(x: mainImgCenter.x, y: mainImgCenter.y + Screen_Height)
 
+
+
+
             let tempPoint = showView.center
             showView.center = CGPoint.init(x: Screen_Width/2, y: tempPoint.y+Screen_Height)
-
             weak var weakSelf : StandardsView! = self
             UIView.animate(withDuration: 0.5, animations: {
                 weakSelf.showView.center = tempPoint
@@ -834,7 +876,7 @@ extension StandardsView{
 
         case StandsViewShowAnimationType.Custom.rawValue:
 
-            self.delegate.customShowAnimation()
+            self.delegate.customShowAnimation!()
 
             break
 
@@ -892,8 +934,8 @@ extension StandardsView{
         UIView.animate(withDuration: 0.5, animations: { void in
 
             weakSelf?.mainImgView.center = CGPoint.init(x: tempPoint.x, y: Screen_Height)
-            weakSelf?.transform = CGAffineTransform.init(rotationAngle: CGFloat(M_PI_4))
-            weakSelf?.alpha = 0.0
+            weakSelf?.showView.transform = CGAffineTransform.init(rotationAngle: CGFloat(M_PI_4))
+            weakSelf?.coverView.alpha = 0.0
 
             var t : CGAffineTransform!
             if weakSelf?.goodDetailView != nil {
@@ -931,7 +973,7 @@ extension StandardsView{
 
             weak var weakSelf : StandardsView! = self
             UIView.animate(withDuration: 0.5, animations: { 
-                weakSelf.alpha = 0.0
+                weakSelf.coverView.alpha = 0.0
                 weakSelf.showView.alpha = 0.0
                 weakSelf.mainImgView.alpha = 0.0
 
@@ -989,7 +1031,7 @@ extension StandardsView{
             break
         case StandsViewDismissAnimationType.Custom.rawValue:
 
-            self.delegate.customDismissAnimation()
+            self.delegate.customDismissAnimation!()
             
             break
         default:
@@ -1023,7 +1065,7 @@ extension StandardsView{
         weak var weakSelf = self
         UIView.animate(withDuration: 0.5, animations: {_ in
 
-            weakSelf?.alpha = 0.5
+            weakSelf?.coverView.alpha = 0.5
 
         }, completion: {(finished) in
 
