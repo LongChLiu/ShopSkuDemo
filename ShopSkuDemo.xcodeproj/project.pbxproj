@@ -25,23 +25,23 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		847129591DF2C7060087ABEE /* PBXContainerItemProxy */ = {
+		847129661DF2C7EB0087ABEE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 847129531DF2C7060087ABEE /* ShoppingStandardDemo.xcodeproj */;
+			containerPortal = 847129601DF2C7EB0087ABEE /* ShoppingStandardDemo.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = B53F6D131C89B129007C4C97;
 			remoteInfo = ShoppingStandardDemo;
 		};
-		8471295B1DF2C7060087ABEE /* PBXContainerItemProxy */ = {
+		847129681DF2C7EB0087ABEE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 847129531DF2C7060087ABEE /* ShoppingStandardDemo.xcodeproj */;
+			containerPortal = 847129601DF2C7EB0087ABEE /* ShoppingStandardDemo.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = B53F6D2C1C89B12A007C4C97;
 			remoteInfo = ShoppingStandardDemoTests;
 		};
-		8471295D1DF2C7060087ABEE /* PBXContainerItemProxy */ = {
+		8471296A1DF2C7EB0087ABEE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 847129531DF2C7060087ABEE /* ShoppingStandardDemo.xcodeproj */;
+			containerPortal = 847129601DF2C7EB0087ABEE /* ShoppingStandardDemo.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = B53F6D371C89B12A007C4C97;
 			remoteInfo = ShoppingStandardDemoUITests;
@@ -66,7 +66,7 @@
 		0B924D831DF13FA9008F7BD1 /* StandarsAdd@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "StandarsAdd@2x.png"; sourceTree = "<group>"; };
 		0B924D841DF13FA9008F7BD1 /* StandarsDel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "StandarsDel@2x.png"; sourceTree = "<group>"; };
 		0B924D851DF13FA9008F7BD1 /* ThrowLineTool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThrowLineTool.swift; sourceTree = "<group>"; };
-		847129531DF2C7060087ABEE /* ShoppingStandardDemo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ShoppingStandardDemo.xcodeproj; path = "商品详情规格选择-OC版本/ShoppingStandardDemo.xcodeproj"; sourceTree = "<group>"; };
+		847129601DF2C7EB0087ABEE /* ShoppingStandardDemo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = ShoppingStandardDemo.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,7 +83,7 @@
 		0B002F2F1DEFCFCB000C38D7 = {
 			isa = PBXGroup;
 			children = (
-				847129531DF2C7060087ABEE /* ShoppingStandardDemo.xcodeproj */,
+				847129601DF2C7EB0087ABEE /* ShoppingStandardDemo.xcodeproj */,
 				0B002F3A1DEFCFCB000C38D7 /* ShopSkuDemo */,
 				0B002F391DEFCFCB000C38D7 /* Products */,
 			);
@@ -128,12 +128,12 @@
 			path = SkuLib;
 			sourceTree = "<group>";
 		};
-		847129541DF2C7060087ABEE /* Products */ = {
+		847129611DF2C7EB0087ABEE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8471295A1DF2C7060087ABEE /* ShoppingStandardDemo.app */,
-				8471295C1DF2C7060087ABEE /* ShoppingStandardDemoTests.xctest */,
-				8471295E1DF2C7060087ABEE /* ShoppingStandardDemoUITests.xctest */,
+				847129671DF2C7EB0087ABEE /* ShoppingStandardDemo.app */,
+				847129691DF2C7EB0087ABEE /* ShoppingStandardDemoTests.xctest */,
+				8471296B1DF2C7EB0087ABEE /* ShoppingStandardDemoUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -188,8 +188,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 847129541DF2C7060087ABEE /* Products */;
-					ProjectRef = 847129531DF2C7060087ABEE /* ShoppingStandardDemo.xcodeproj */;
+					ProductGroup = 847129611DF2C7EB0087ABEE /* Products */;
+					ProjectRef = 847129601DF2C7EB0087ABEE /* ShoppingStandardDemo.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -200,25 +200,25 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		8471295A1DF2C7060087ABEE /* ShoppingStandardDemo.app */ = {
+		847129671DF2C7EB0087ABEE /* ShoppingStandardDemo.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
 			path = ShoppingStandardDemo.app;
-			remoteRef = 847129591DF2C7060087ABEE /* PBXContainerItemProxy */;
+			remoteRef = 847129661DF2C7EB0087ABEE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8471295C1DF2C7060087ABEE /* ShoppingStandardDemoTests.xctest */ = {
+		847129691DF2C7EB0087ABEE /* ShoppingStandardDemoTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = ShoppingStandardDemoTests.xctest;
-			remoteRef = 8471295B1DF2C7060087ABEE /* PBXContainerItemProxy */;
+			remoteRef = 847129681DF2C7EB0087ABEE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8471295E1DF2C7060087ABEE /* ShoppingStandardDemoUITests.xctest */ = {
+		8471296B1DF2C7EB0087ABEE /* ShoppingStandardDemoUITests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = ShoppingStandardDemoUITests.xctest;
-			remoteRef = 8471295D1DF2C7060087ABEE /* PBXContainerItemProxy */;
+			remoteRef = 8471296A1DF2C7EB0087ABEE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
