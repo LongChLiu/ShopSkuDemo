@@ -84,11 +84,10 @@ class ViewController: UIViewController,StandardsViewDelegate {
 
         standView.customBtns = ["加入购物车","立即购买"]
 
-        let tempClassInfo1 = standardClassInfo.init(class_Id: "100", stand_ClassName: "红色")
-        let tempClassInfo2 = standardClassInfo.init(class_Id: "101", stand_ClassName: "蓝色")
+        let tempClassInfo1 = standardClassInfo(class_Id: "100", stand_ClassName: "红色")
+        let tempClassInfo2 = standardClassInfo(class_Id: "101", stand_ClassName: "蓝色")
         let tempClassInfoArr = [tempClassInfo1,tempClassInfo2]
         let tempModel = StandardModel.standardModel(classInfo: tempClassInfoArr, standName: "颜色")
-
 
         let tempClassInfo3 = standardClassInfo.standard_ClassInfo(classId: "102", standClassName: "XL")
         let tempClassInfo4 = standardClassInfo.standard_ClassInfo(classId: "103", standClassName: "XXL")
@@ -96,7 +95,6 @@ class ViewController: UIViewController,StandardsViewDelegate {
         let tempClassInfoArr2 = [tempClassInfo3,tempClassInfo4,tempClassInfo5]
         let tempModel2 = StandardModel.standardModel(classInfo: tempClassInfoArr2, standName: "尺寸")
 
-        
         standView.standardArr = [tempModel,tempModel2]
 
         return standView
@@ -122,21 +120,16 @@ class ViewController: UIViewController,StandardsViewDelegate {
 
     /*点击规格代理*/
     func standardView(standardsView: StandardsView, selBtnAction: UIButton, selID: String, standName: String, idx: NSInteger) {
-
         NSLog("selectID = %@  standName = %@  index = %ld", selID,standName,idx)
-
-
     }
 
     //设置自定义Btn的属性
     func standardView(standardsView: StandardsView, btn: UIButton) {
-
         if btn.tag - 100 == 0 {
             btn.backgroundColor = UIColor.yellow
         }else if(btn.tag - 100 == 1){
             btn.backgroundColor = UIColor.orange
         }
-
     }
 
 
